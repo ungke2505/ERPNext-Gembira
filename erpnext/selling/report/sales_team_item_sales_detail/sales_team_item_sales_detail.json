@@ -1,0 +1,63 @@
+{
+ "add_total_row": 1,
+ "columns": [],
+ "creation": "2023-11-06 11:53:19.542871",
+ "disable_prepared_report": 0,
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [
+  {
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "label": "Store Name",
+   "mandatory": 1,
+   "options": "Cost Center",
+   "wildcard_filter": 0
+  },
+  {
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "label": "From Date",
+   "mandatory": 1,
+   "wildcard_filter": 0
+  },
+  {
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "label": "To Date",
+   "mandatory": 1,
+   "wildcard_filter": 0
+  }
+ ],
+ "idx": 0,
+ "is_standard": "Yes",
+ "modified": "2023-12-03 23:44:48.712828",
+ "modified_by": "Administrator",
+ "module": "Selling",
+ "name": "Sales Team Item Sales Detail",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "query": "SELECT\n    `tabSales Invoice`.`posting_date` AS \"Posting Date:Date:100\",\n    `tabSales Team`.`sales_person` AS \"Sales Person:Link/Sales Person:200\",\n    `tabSales Invoice`.`name` AS \"Sales Invoice:Link/Sales Invoice:150\",\n    `tabSales Invoice`.`customer_name` AS \"Customer:Data/Customer:200\",\n    `tabSales Invoice Item`.`item_name` AS \"Item Name:Data:250\",\n    `tabSales Invoice Item`.`qty`,\n    `tabSales Invoice Item`.`uom`,\n    `tabSales Invoice Item`.`rate`,\n    `tabSales Invoice`.`outstanding_amount`\"Hutang:Currency/currency:120\",\n    `tabSales Invoice`.`total` AS \"Total:Currency/currency:120\"\n    \nFROM\n    `tabSales Invoice`\n    JOIN `tabSales Team`\n        ON `tabSales Invoice`.`name` = `tabSales Team`.`parent`\n    JOIN `tabSales Invoice Item`\n        ON `tabSales Invoice`.`name` = `tabSales Invoice Item`.`parent`\nWHERE\n    `tabSales Invoice`.`docstatus` <= 1\n    AND `tabSales Invoice`.`cost_center` = %(cost_center)s\n    AND `tabSales Invoice`.`posting_date` >= %(from_date)s\n    AND `tabSales Invoice`.`posting_date` <= %(to_date)s\nORDER BY\n    `tabSales Invoice`.`posting_date` DESC,\n    `tabSales Invoice`.`name` DESC",
+ "ref_doctype": "Sales Invoice",
+ "reference_report": "sales team report",
+ "report_name": "Sales Team Item Sales Detail",
+ "report_type": "Query Report",
+ "roles": [
+  {
+   "role": "Accounts Manager"
+  },
+  {
+   "role": "Accounts User"
+  },
+  {
+   "role": "Kepala Kasir"
+  },
+  {
+   "role": "Kepala Toko"
+  },
+  {
+   "role": "Sales User"
+  }
+ ]
+}
